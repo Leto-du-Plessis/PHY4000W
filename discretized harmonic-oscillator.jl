@@ -1,28 +1,30 @@
 using LinearAlgebra
-Pkg,add("Plots")
-using Plots
+using PyCall
+pygui(:tk) # Set pyploy backend to tk
+using PyPlot
 
 # Settings
 # --------------------------------------
 
-N = 10000    # Number of discrete points
-m = 1       # Mass
-omega = 1 
+N = 100   # Number of discrete points
+m = 1     # Mass
+omega = 1 # Angular momentum
 Lbound = -3 # Left x - bound
 Rbound = 3  # Right x - bound
-deltax = (Rbound - Lbound)/N # x - step
+deltax = (Rbound - Lbound)/N       # x - step
+xs = LinRange(Lbound, Rbound, N+1) # Create an array of x values
 
 # Create kinetic energy matrix
 # --------------------------------------
 
-diagonal = vec(2 * ones(1, N+1))
-subdiagonal = vec(-1 * ones(1, N))
+diagonal = vec(2 * ones(1, N+1))   # vector containing the diagonal entries in the matrix
+subdiagonal = vec(-1 * ones(1, N)) # vector containing the subdiagonal entries in the matrix
 
 T = 1/(2 * m * deltax ^ 2) * SymTridiagonal(diagonal, subdiagonal) # Kinetic energy matrix
 
 #println(T)
 
-# Create potential enery matrix
+# Create potential energy matrix
 # --------------------------------------
 
 diagonal = ones(1, N+1)
@@ -44,6 +46,24 @@ H = T + U # Hamiltonian matrix
 eigenvalues = eigvals(H)
 eigenvectors = eigvecs(H)
 
+# Outputs
+# --------------------------------------
+
+# Text 
+
+println("Calculated eigenvalues:")
 println(eigenvalues[1:10])
 println(' ')
 #println(eigenvectors)
+
+# Plots
+
+for i = 1:5
+    plot(xs, eigenvectors[:,i])
+end
+title("First five eigenfunctions of the quantum harmonic oscillator")
+yaxis_label("\\psi(x)\\")
+xaxis(x)
+
+show()
+#plot(range(Lbound,Rbound,N), toBePlot[1])
