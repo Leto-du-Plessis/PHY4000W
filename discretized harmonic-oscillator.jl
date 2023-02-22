@@ -2,15 +2,16 @@ using LinearAlgebra
 using PyCall
 pygui(:tk) # Set pyploy backend to tk
 using PyPlot
+pygui(true)
 
 # Settings
 # --------------------------------------
 
-N = 100   # Number of discrete points
+N = 1000   # Number of discrete points
 m = 1     # Mass
 omega = 1 # Angular momentum
-Lbound = -3 # Left x - bound
-Rbound = 3  # Right x - bound
+Lbound = -5 # Left x - bound
+Rbound = 5  # Right x - bound
 deltax = (Rbound - Lbound)/N       # x - step
 xs = LinRange(Lbound, Rbound, N+1) # Create an array of x values
 
@@ -59,11 +60,13 @@ println(' ')
 # Plots
 
 for i = 1:5
-    plot(xs, eigenvectors[:,i])
+    plot(xs, eigenvectors[:,i], label = "psi_" * repr(i))
 end
-title("First five eigenfunctions of the quantum harmonic oscillator")
-yaxis_label("\\psi(x)\\")
-xaxis(x)
+title("First five eigenfunctions of the quantum harmonic oscillator", size = 30)
+ylabel("psi(x)", size = 25)
+xlabel("x", size = 25)
+legend()
+
 
 show()
 #plot(range(Lbound,Rbound,N), toBePlot[1])
