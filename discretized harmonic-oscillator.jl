@@ -1,10 +1,11 @@
-import LinearAlgebra.Tridiagonal as Tridiagonal
-import LinearAlgebra.Diagonal as Diagonal
+using LinearAlgebra
+Pkg,add("Plots")
+using Plots
 
 # Settings
 # --------------------------------------
 
-N = 10    # Number of discrete points
+N = 10000    # Number of discrete points
 m = 1       # Mass
 omega = 1 
 Lbound = -3 # Left x - bound
@@ -17,7 +18,9 @@ deltax = (Rbound - Lbound)/N # x - step
 diagonal = vec(2 * ones(1, N+1))
 subdiagonal = vec(-1 * ones(1, N))
 
-T = 1/(2 * m * deltax ^ 2) * Tridiagonal(subdiagonal, diagonal, subdiagonal) # Kinetic energy matrix
+T = 1/(2 * m * deltax ^ 2) * SymTridiagonal(diagonal, subdiagonal) # Kinetic energy matrix
+
+#println(T)
 
 # Create potential enery matrix
 # --------------------------------------
@@ -39,5 +42,8 @@ H = T + U # Hamiltonian matrix
 # Calculate eigenvalues and eigenfunctions
 
 eigenvalues = eigvals(H)
+eigenvectors = eigvecs(H)
 
-println(eigenvalues)
+println(eigenvalues[1:10])
+println(' ')
+#println(eigenvectors)
