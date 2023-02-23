@@ -71,6 +71,4 @@ xticks(size = 20)
 yticks(size = 20)
 legend(fontsize = 20)
 
-
-show()
 #plot(range(Lbound,Rbound,N), toBePlot[1])
