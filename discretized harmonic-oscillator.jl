@@ -59,13 +59,17 @@ println(' ')
 
 # Plots
 
-for i = 1:5
+for i = 2:2:10
     plot(xs, eigenvectors[:,i], label = "psi_" * repr(i))
 end
-title("First five eigenfunctions of the quantum harmonic oscillator", size = 30)
+vlines(0, -0.1, 0.1, color = "k")
+hlines(0, Lbound, Rbound, color = "k")
+title("First five odd eigenfunctions of the quantum harmonic oscillator", size = 30)
 ylabel("psi(x)", size = 25)
 xlabel("x", size = 25)
-legend()
+xticks(size = 20)
+yticks(size = 20)
+legend(fontsize = 20)
 
 
 show()
