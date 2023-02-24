@@ -4,6 +4,9 @@ using LinearAlgebra
 using PyCall
 using PyPlot
 
+pygui(:tk) # Set pyploy backend to tk
+pygui(true) # Enable python backend use
+
 # Settings
 # --------------------------------------
 
@@ -26,15 +29,23 @@ T = 1/(2 * m * deltax ^ 2) * SymTridiagonal(diagonal, subdiagonal) # Kinetic ene
 # Create potential energy matrix
 # --------------------------------------
 
-function v(x)
-    form = x 
-    return form
+function V(x)
+    """
+    # Arguments
+    - 'x::Float': positional argument to the potential
+    # Outputs
+    - 'potential:: Float': Potential V(X) evaluated at position x
+    # Usage
+    - Functional form should be modified to represent the potential of the system under consideration.
+    """
+    potential = cos(x)
+    return potential
 end
 
 diagonal = ones(1, N+1)
 
 for i = 1:N+1 
-    diagonal[i] = v(xs[i])
+    diagonal[i] = V(xs[i])
 end
 
 U = Diagonal(vec(diagonal))
@@ -45,5 +56,33 @@ U = Diagonal(vec(diagonal))
 H = T + U
 
 eigenvalues = eigvals(H)
-eigenfunctions = eigvecs(H)
+eigenvectors = eigvecs(H)
 
+# Outputs
+
+println("First 10 eigenvalues:")
+println(eigenvalues[1:10])
+
+# Plots
+# Plots Settings
+plotset = true
+
+function outputplots(rangemin, rangemax, rangestep, xs, eigenvectors)
+
+    for i = rangemin:rangestep:rangemax
+        plot(xs, eigenvectors[:,i], label = "psi_" * repr(i))
+    end
+    vlines(0, minimum(eigenvectors), maximum(eigenvectors), color = "k")
+    hlines(0, xs[1], xs[size(xs)[1]-1], color = "k")
+    title("First couple of eigenfunctions for the specified potentials", size = 30)
+    ylabel("psi(x)", size = 25)
+    xlabel("x", size = 25)
+    xticks(size = 20)
+    yticks(size = 20)
+    legend(fontsize = 20)
+
+end
+
+if plotset == true
+    outputplots(1, 5, 1, xs, eigenvectors)
+end
