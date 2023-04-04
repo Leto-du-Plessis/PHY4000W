@@ -59,7 +59,7 @@ println(' ')
 
 # Plots
 
-for i = 2:2:10
+for i = 1:2:10
     plot(xs, eigenvectors[:,i], label = "psi_" * repr(i))
 end
 vlines(0, -0.1, 0.1, color = "k")
